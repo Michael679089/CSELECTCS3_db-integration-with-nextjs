@@ -9,18 +9,15 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-var eslintConfig = [
+const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    ignores: [
+      "src/generated/prisma/runtime/wasm-compiler-edge.js",
+      "src/generated/prisma/runtime/wasm-engine-edge.js",
+      "src/generated",
+    ],
+  },
 ];
-
-eslintConfig.push([
-  ...compat.config({
-    extends: ["next"],
-    rules: {
-      "react/no-unescaped-entities": "off",
-      "@next/next/no-page-custom-font": "off",
-    },
-  }),
-]);
 
 export default eslintConfig;
