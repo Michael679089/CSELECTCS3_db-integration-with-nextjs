@@ -1,43 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-  const parsedId = parseInt(id, 10);
-
-  if (isNaN(parsedId)) {
-    return NextResponse.json(
-      {
-        error: `Invalid ID "${id}". Likely a non-API request like React DevTools.`,
-      },
-      { status: 401 }
-    );
-  }
-
-  // if not stopped continue using prisma
-
-  const post = await prisma.post.findUnique({
-    where: {
-      id: parsedId,
-    },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      author: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  });
-
-  return NextResponse.json(post, { status: 200 });
-}
-
 export async function PUT(req: NextRequest) {
   console.log("Calling API Route PUT");
   const formData = await req.formData();

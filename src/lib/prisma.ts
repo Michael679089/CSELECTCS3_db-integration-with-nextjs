@@ -15,14 +15,3 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 export default prisma;
 
 // Additional custom functionality:
-
-export async function getPosts() {
-  return await prisma.post.findMany({
-    include: { author: true },
-    orderBy: [
-      {
-        id: "asc",
-      },
-    ],
-  });
-}

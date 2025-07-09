@@ -1,4 +1,4 @@
-import { PostShow } from "@/lib/interfaces";
+import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,29 +7,27 @@ export default async function Post({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const { id } = await params;
 
-  let response: Response;
-  let post: PostShow;
+  const post = await prisma.post.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
 
-  try {
-    const id = (await params).id;
-    response = await fetch(`${baseUrl}/api/posts/${id}`, {
-      method: "GET",
-      cache: "no-store",
-    });
-    post = await response.json(); // ✅ only once
-    console.log(post);
-  } catch (error) {
-    console.error("ERROR: ", error);
-    notFound(); // Show 404 if fetch or parse fails
-  }
-
-  if (!response.ok) {
+  if (!post) {
     notFound();
   }
-
-  console.log("MY POST:", post);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16">

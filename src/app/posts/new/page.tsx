@@ -1,18 +1,21 @@
 // src/app/posts/new/page.tsx (Server Component)
 
+import prisma from "@/lib/prisma";
 import PostFormClient from "@/app/ui/PostFormClient";
 import { AuthorCreate } from "@/lib/interfaces";
-import { getBaseUrl } from "@/lib/utils";
 
 export default async function NewPostPage() {
-  const baseUrl = getBaseUrl(); // returns either localhost or Vercel URL
-  const response = await fetch(`${baseUrl}/api/authors`, { cache: "no-store" });
+  const authors = (
+    await prisma.user.findMany({
+      select: { id: true, name: true },
+    })
+  ).filter((a): a is AuthorCreate => a.name !== null);
 
-  const authors: AuthorCreate[] = await response.json();
+  const myAuthors: AuthorCreate[] = authors;
 
   return (
     <div>
-      <PostFormClient authors={authors} />;
+      <PostFormClient authors={myAuthors}></PostFormClient>
     </div>
   );
 }
