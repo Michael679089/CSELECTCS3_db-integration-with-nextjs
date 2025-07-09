@@ -28,3 +28,19 @@ body {
 .main {
   @apply grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)];
 }
+
+.myForm {
+  @apply space-y-6;
+}
+.myForm div label {
+  @apply block text-lg mb-2;
+}
+.myForm div input {
+  @apply w-full px-4 py-2 border rounded-lg;
+}
+.myForm div textarea {
+  @apply w-full px-4 py-2 border rounded-lg;
+}
+.myForm button {
+  @apply w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600;
+}
