@@ -13,10 +13,15 @@ export default function NewPostForm({ authors }: { authors: AuthorCreate[] }) {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const formResponse = await fetch("/api/posts/0", {
+    const formResponse = await fetch("/api/posts", {
       method: "POST",
       body: formData,
     });
+
+    console.log("Form Data:");
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     if (formResponse.ok) {
       router.push("/posts");

@@ -1,13 +1,13 @@
 // src/app/posts/page.tsx
-import { getPosts } from "@/lib/prisma"; // ✅ valid import
+import prisma from "@/lib/prisma";
+import { getPosts } from "@/lib/utils"; // ✅ valid import
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
-import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic"; // ensures fresh data every request
 
 export default async function Posts() {
   const posts = await getPosts();
-
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   async function handleDelete(formData: FormData) {
     "use server";
@@ -15,19 +15,19 @@ export default async function Posts() {
     const id = formData.get("id") as string;
     const parsedId = parseInt(id);
 
-    console.log("sending id:", parsedId);
-    try {
-      const deleteResponse = await fetch(`${baseUrl}/api/posts/${parsedId}`, {
-        method: "DELETE",
-      });
-      const deleteResponseJSON = await deleteResponse.json();
+    if (isNaN(parsedId)) {
+      console.error("Invalid ID");
+      return;
+    }
 
-      if (deleteResponseJSON.success == true) {
-        revalidatePath("/posts");
-        NextResponse.redirect(`${baseUrl}/posts`);
-      }
+    try {
+      await prisma.post.delete({
+        where: { id: parsedId },
+      });
+
+      revalidatePath("/posts");
     } catch (error) {
-      console.log(error);
+      console.error("Delete error:", error);
     }
   }
 
