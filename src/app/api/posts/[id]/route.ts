@@ -106,3 +106,41 @@ export async function PUT(req: NextRequest) {
     { status: 200 }
   );
 }
+
+export async function DELETE(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> } // ✅ Notice the `Promise`
+) {
+  console.log("Calling API ROUTE Delete");
+
+  const { id } = await context.params; // ✅ Properly awaited
+  const parsedId = parseInt(id, 10);
+
+  if (isNaN(parsedId)) {
+    return NextResponse.json(
+      { success: false, error: `Invalid ID "${id}"` },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const deleteResponse = await prisma.post.delete({
+      where: { id: parsedId },
+    });
+
+    return NextResponse.json(
+      {
+        message: "Post deleted successfully.",
+        success: true,
+        id: parsedId,
+        deleteResponse,
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: "Failed to delete post.", details: err },
+      { status: 500 }
+    );
+  }
+}

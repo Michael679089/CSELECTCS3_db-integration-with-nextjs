@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import EditFormClient from "@/app/ui/EditFormClient";
+import Link from "next/link";
 
 import { post } from "@/lib/interfaces";
 
@@ -29,7 +30,12 @@ export default async function Post({
   } as post;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center -mt-16">
+    <div className="bg-gray-50 flex flex-col items-center justify-center w-full">
+      <div className="my-5">
+        <Link href="/posts" className="myBackBtn">
+          GO Back
+        </Link>
+      </div>
       <h1> Hello this text is from the Server: </h1>
       <EditFormClient post={myPost} />
     </div>

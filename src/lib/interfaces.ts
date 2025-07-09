@@ -35,3 +35,7 @@ export interface User {
   name?: string | null;
   posts?: Post[]; // Optional to avoid circular dependency issues
 }
+
+export interface Posts {
+  posts: Post[];
+}

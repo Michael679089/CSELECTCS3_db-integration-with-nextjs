@@ -1,6 +1,6 @@
 // src/app/posts/new/page.tsx (Server Component)
 
-import PostFormComponentClient from "@/app/ui/PostFormClient";
+import PostFormClient from "@/app/ui/PostFormClient";
 import { AuthorCreate } from "@/lib/interfaces";
 
 export default async function NewPostPage() {
@@ -11,7 +11,7 @@ export default async function NewPostPage() {
 
   return (
     <div>
-      <PostFormComponentClient authors={authors} />;
+      <PostFormClient authors={authors} />;
     </div>
   );
 }

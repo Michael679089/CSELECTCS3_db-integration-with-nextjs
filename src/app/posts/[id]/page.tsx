@@ -32,22 +32,27 @@ export default async function Post({
   console.log("MY POST:", post);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center -mt-16">
-      <article className="max-w-2xl space-y-4 font-[family-name:var(--font-geist-sans)] border border-black px-20 py-10">
-        <div className="title_part">
-          <h1 className="text-4xl font-bold mb-8 text-[#333333]">
-            {post.title}
-          </h1>
-          <p className="text-gray-600 text-center">by {post.author.name}</p>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16">
+      <div className="my-5">
+        <Link href="/posts" className="myBackBtn">
+          GO Back
+        </Link>
+      </div>
+
+      <article className="max-w-2xl w-full space-y-6 border border-gray-300 bg-white shadow-sm px-10 py-8">
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl font-bold text-gray-800">{post.title}</h1>
+          <p className="text-sm text-gray-500">by {post.author.name}</p>
         </div>
-        <div className="prose prose-gray mt-8 border border-black">
-          {post.content || "No content available."}
+
+        <div className="prose prose-gray max-w-none text-justify border border-gray-200 p-6 bg-gray-100">
+          {post.content || (
+            <em className="text-gray-400">No content available.</em>
+          )}
         </div>
-        <Link
-          href={`/posts/${post.id}/edit`}
-          className="bg-black text-white w-full p-5"
-        >
-          Edit Post
+
+        <Link href={`/posts/${post.id}/edit`} className="editPostBtn">
+          ✏️ Edit Post
         </Link>
       </article>
     </div>
